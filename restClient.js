@@ -6,7 +6,7 @@ var pir = new Gpio(21,'in','rising');
 var PASSWORD = 'motSens';
 var USERNAME = 'motion-sensor';
 var CLIENTID = 'iot';
-var IP = "147.32.83.195:8443";
+var IP = "https://147.32.83.195:8443";
 
 var Communication = function(){
   var token = null;
@@ -21,7 +21,7 @@ var Communication = function(){
   
   var getToken = function(successCallback){
     request.post({
-    url: "https://"+IP+"/auth/realms/iot/protocol/openid-connect/token",
+    url: IP+"/auth/realms/iot/protocol/openid-connect/token",
     form: {username:USERNAME,password:PASSWORD,client_id:CLIENTID,grant_type:'password'},
     rejectUnauthorized : false},
     function(err,httpResponse,body){
@@ -39,7 +39,7 @@ var Communication = function(){
   
   var refreshToken = function(successCallback){
     request.post({
-    url: "https://"+IP+"/auth/realms/iot/protocol/openid-connect/token",
+    url: IP+"/auth/realms/iot/protocol/openid-connect/token",
     form: {refresh_token:refreshTokenHash,client_id:CLIENTID,grant_type:'refresh_token'},
     rejectUnauthorized : false},
     function(err,httpResponse,body){
@@ -96,7 +96,7 @@ var Communication = function(){
   
   var sendMotion = function(token,value){
     request.post({
-      url:"https://"+ IP +"/iot-hub-example/rest/movement/add/" + value,
+      url: IP +"/iot-hub-example/rest/movement/add/" + value,
 	headers: { 'Authorization': 'Bearer '+token},
 	rejectUnauthorized : false},
 	function(err,httpResponse,body){
